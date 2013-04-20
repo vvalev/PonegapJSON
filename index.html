@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+
+  <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>JSON Content Client, v0.96</title>
+	
+	<!-- PHONEGAP PREPARATION -->
+	<script type="text/javascript" charset="utf-8" src="cordova-2.6.0.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    
+    document.addEventListener("deviceready", onDeviceReady, false);
+    
+    // Call onDeviceReady when Cordova is loaded.
+    //
+    // At this point, the document has loaded but cordova-2.6.0.js has not.
+    // When Cordova is loaded and talking with the native device,
+    // it will call the event `deviceready`.
+    //
+    //function onLoad() {
+  //      document.addEventListener("deviceready", onDeviceReady, false);
+//    }
+
+    // Cordova is loaded and it is now safe to make calls Cordova methods
+    //
+   // PhoneGap is ready
+    //
+    function onDeviceReady() {
+	// Register the event listeners
+		document.addEventListener("pause", onPause, false);
+		document.addEventListener("resume", onResume, false);
+		
+		
+		var element = document.getElementById('deviceProperties');
+
+        element.innerHTML = 'Device Name: '     + device.name     + '<br />' + 
+                            'Device PhoneGap: ' + device.phonegap + '<br />' + 
+                            'Device Platform: ' + device.platform + '<br />' + 
+                            'Device UUID: '     + device.uuid     + '<br />' + 
+                            'Device Version: '  + device.version  + '<br />';
+
+		
+	}
+
+
+ 	// Handle the pause
+    //
+    function onPause() {
+    	//alert("Paused!");
+    	phgAlert("Handle the pause","Paused!");
+    	
+    	//playBeep();
+    	
+    }
+    // Handle the resume
+    //
+    function onResume() {
+    	//alert("Resumed!");
+    	phgAlert("Handle the pause","Paused!");
+    }
+    
+    
+    //---PhoneGap alert here...
+    function phgAlert(message){
+    	//-- navigator.notification.alert(message, alertCallback, [title], [buttonName])
+
+	    navigator.notification.alert(
+	    			message,
+	    			alertCallback,
+	    			'TITLE',
+	    			'Close');
+
+    }
+    
+    
+    function alertCallback(){
+    	//---handle alert dismiss
+    }
+    
+    // Beep three times
+    //
+    function playBeep() {
+        navigator.notification.beep(3);
+    }
+
+
+    
+    
+    </script>
+
+
+	
+	
+	<link rel="stylesheet"  href="css/themes/default/jquery.mobile-1.3.0.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.mobile-1.3.0.js"></script>
+
+	
+	
+<script>
+		
+$(document).ready(function () {
+	alert('portalUser (index) document ready!!'); 
+    console && console.log("portalUser (index) document ready!!");
+	
+	getData();
+	
+});
+
+/*		
+		$(document).on('pageload', '[data-role="page"]', function(){   
+			//alert('portalUser (index) pageload!!');
+			getData();
+			//console && console.log("portalUser (index) pageload!!");
+		});
+*/		
+		
+            function getData() {
+			
+			var http_method = "POST";
+			//var url = "http://localhost:8080/JSON_Test/json" ; //--No SSL
+			var url = "https://localhost:4444/JSON_Test/json" ; //---with SSL
+			
+			/* ATTENTION: It is very important first to call, for example, brawser: chrome.exe --disable-web-security
+			   to allow cross-domain ajax queries!!!! --*/
+			
+                $.ajax({
+                    type: http_method,
+					cache: false,
+					async: false,
+					url: url,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function(data) {
+					
+                       //alert('Success:' + data.person.name + ' ' + data.person.family + ' Address:' + data.person.address.city + ',' + data.person.address.street);
+					   
+					   
+					  var blocka = "<div class='ui-block-a' style='width: 40%'>";
+					  var blockb = "<div class='ui-block-b' style='width: 15%'>";
+					  var blockc = "<div class='ui-block-c' style='width: 15%'>";
+					  var blockd = "<div class='ui-block-d' style='width: 15%'>";
+					  var blocke = "<div class='ui-block-e' style='width: 15%'>";
+					  
+					  var title = "<div class='ui-bar ui-bar-a' style='text-align: right'>";
+					  var uibarc = "<div class='ui-bar ui-bar-c' style='text-align: right'>";
+					  var uibare = "<div class='ui-bar ui-bar-e' style='text-align: right'>";
+					  
+					  var str="<div class='ui-grid-d'>";
+					  str += blocka + title + "Сървър-Данни:</div></div>";
+					  //str += blockb + title + "Фамилия</div></div>";
+					  //str += blockc + title + "Град</div></div>";
+					  //str += blockd + title + "Улица</div></div>";
+					  
+					  
+					  //for (var i in data) {
+						str += blocka + uibare + data.person.name   		   + "</div></div>";
+						str += blocka + uibare + data.person.family 		   + "</div></div>";
+						str += blocka + uibare + data.person.address.city   + "</div></div>";
+						str += blocka + uibare + data.person.address.street + "</div></div>";
+ 					  //}
+					 
+						str += "</div>";
+						$("#jsondata").html(str).trigger("create");
+
+					   
+                    }
+					,
+                    error: function (xhr, ajaxOptions, thrownError) {
+                         alert("Error: " + xhr.status + "\n" +
+                               "Message: " + xhr.statusText + "\n" +
+                               "Response: " + xhr.responseText + "\n" + thrownError);
+                    }
+                });
+				
+				
+            }
+			
+			//-----------------------------------------------------------------------
+
+            function getData2() {
+			
+			var http_method = "POST";
+			//var url = "http://localhost:8080/JSON_Test/json2" ; //--No SSL
+			var url = "https://localhost:4444/JSON_Test/json2" ; //---with SSL
+			
+			/* ATTENTION: It is very important first to call, for example, brawser: chrome.exe --disable-web-security
+			   to allow cross-domain ajax queries!!!! --*/
+			
+                $.ajax({
+                    type: http_method,
+					cache: false,
+					async: false,
+					url: url,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function(data) {
+					
+                       //alert('Success:' + data.car.manifacturer);
+					   
+					   
+					  var blocka = "<div class='ui-block-a' style='width: 40%'>";
+					  var blockb = "<div class='ui-block-b' style='width: 15%'>";
+					  var blockc = "<div class='ui-block-c' style='width: 15%'>";
+					  var blockd = "<div class='ui-block-d' style='width: 15%'>";
+					  var blocke = "<div class='ui-block-e' style='width: 15%'>";
+					  
+					  var title = "<div class='ui-bar ui-bar-a' style='text-align: right'>";
+					  var uibarc = "<div class='ui-bar ui-bar-c' style='text-align: right'>";
+					  var uibare = "<div class='ui-bar ui-bar-e' style='text-align: right'>";
+					  
+					  var str="<div class='ui-grid-d'>";
+					  str += blocka + title + "Кола/марка:</div></div>";
+					  
+					  
+						str += blocka + uibare + data.car.manifacturer   		   + "</div></div>";
+						
+						str += "</div>";
+						$("#car_jsondata").html(str).trigger("create");
+
+					   
+                    }
+					,
+                    error: function (xhr, ajaxOptions, thrownError) {
+                         alert("Error: " + xhr.status + "\n" +
+                               "Message: " + xhr.statusText + "\n" +
+                               "Response: " + xhr.responseText + "\n" + thrownError);
+                    }
+                });
+				
+				
+            }
+
+			//----------------------------------------------------------------------------------------------------------------
+            function getData3() {
+    			
+    			var http_method = "POST";
+    			//var url = "http://localhost:8080/JSON_Test/json2" ; //--No SSL
+    			var url = "https://localhost:4444/JSON_Test/json3" ; //---with SSL
+    			
+    			/* ATTENTION: It is very important first to call, for example, brawser: chrome.exe --disable-web-security
+    			   to allow cross-domain ajax queries!!!! --*/
+    			
+                    $.ajax({
+                        type: http_method,
+    					cache: false,
+    					async: false,
+    					url: url,
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function(data) {
+    					
+                           //alert('Success:' + data.car.manifacturer);
+    					   
+    					   
+    					  var blocka = "<div class='ui-block-a' style='width: 40%'>";
+    					  var blockb = "<div class='ui-block-b' style='width: 15%'>";
+    					  var blockc = "<div class='ui-block-c' style='width: 15%'>";
+    					  var blockd = "<div class='ui-block-d' style='width: 15%'>";
+    					  var blocke = "<div class='ui-block-e' style='width: 15%'>";
+    					  
+    					  var title = "<div class='ui-bar ui-bar-a' style='text-align: right'>";
+    					  var uibarc = "<div class='ui-bar ui-bar-c' style='text-align: right'>";
+    					  var uibare = "<div class='ui-bar ui-bar-e' style='text-align: right'>";
+    					  
+    					  var str="<div class='ui-grid-d'>";
+    					  str += blocka + title + "Приятел е с:</div></div>";
+    					  
+    					  
+    						str += blocka + uibare + data.friend.name   		   + "</div></div>";
+    					 
+    						str += "</div>";
+    						$("#friend_jsondata").html(str).trigger("create");
+
+    					   
+                        }
+    					,
+                        error: function (xhr, ajaxOptions, thrownError) {
+                             alert("Error: " + xhr.status + "\n" +
+                                   "Message: " + xhr.statusText + "\n" +
+                                   "Response: " + xhr.responseText + "\n" + thrownError);
+                        }
+                    });
+    				
+    				
+                }
+
+			
+			//setInterval('getData()',1000); //call every ... secs
+			
+			//setInterval('getData2()',5000); //call every ... secs
+
+			//setInterval('getData3()',3000); //call every ... secs
+			
+	</script>
+
+  </head>
+  
+  <body>
+
+  
+    <!-- Main Page -->
+    <div id="main" data-role="page">
+      <div data-role="header">
+        <h1>Sync (jQM,JSON)</h1>
+      </div>
+      <div id="content" data-role="content" data-theme="b">
+        <div id="jsondata"></div>
+		<div id="car_jsondata"></div>
+		<div id="friend_jsondata"></div>
+		<div id="deviceProperties"></div>
+      </div>
+    </div>
+    
+    
+    
+  </body>
+</html>
